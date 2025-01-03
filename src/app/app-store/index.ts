@@ -6,11 +6,9 @@ import {
   createSelector,
   MetaReducer
 } from '@ngrx/store';
+import { UsersReducer, UsersState } from './users/user.reducer';
 
-// export interface User{
-//   id:number;
-//   name:string;
-// }
+
 export interface Order{
   id:number;
   userId:number;
@@ -20,18 +18,19 @@ export interface Order{
 export const usersFeatureKey = 'users';
 
 export interface AppState {
-  users:{
-    enetities:{[id:number]:User};
-    selectedUserId:number| null;
-  },
-  orders:{
-    entities:{[id:number]:Order};
-  }
+  users:UsersState
+  // users:{
+  //   enetities:{[id:number]:UserState};
+  //   selectedUserId:number| null;
+  // },
+  // orders:{
+  //   entities:{[id:number]:Order};
+  // }
 
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-
+users:UsersReducer
 };
 
 
