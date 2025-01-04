@@ -3,10 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StoreModule } from '@ngrx/store';
+import { provideStore, StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UsersReducer } from './app-store/users/user.reducer';
 import { HttpClientModule } from '@angular/common/http';
+import { provideEffects } from '@ngrx/effects';
+import { UsersEffects } from './providers/users.effect';
 
 
 @NgModule({
@@ -18,12 +20,13 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({
-      users:UsersReducer
-    }, {}),
+    StoreModule.forRoot({users:UsersReducer}, {}),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    provideStore(),
+    provideEffects(UsersEffects),
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
