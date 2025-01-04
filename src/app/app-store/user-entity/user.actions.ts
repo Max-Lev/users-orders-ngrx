@@ -6,7 +6,6 @@ import { User } from './user.model';
 export const UserActions = createActionGroup({
   source: 'User/API',
   events: {
-    // 'Load Users': emptyProps(),
     'Load Users': props<{ users: User[] }>(),
     'Load Users Fail': props<{ error:string  }>(),
     'Load Users Success': props<{ users: User[] }>(),

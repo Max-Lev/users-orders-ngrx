@@ -13,8 +13,11 @@ export class AppComponent implements OnInit{
   store = inject(Store);
 
   ngOnInit(): void {
-    // debugger;
-    // this.store.dispatch(loadUsers());
+    
+    this.store.subscribe(s=>{
+      console.log(s);
+    })
+
    }
 
 }
