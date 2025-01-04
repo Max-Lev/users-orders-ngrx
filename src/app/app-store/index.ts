@@ -6,7 +6,9 @@ import {
   createSelector,
   MetaReducer
 } from '@ngrx/store';
-import { UsersReducer, UsersState } from './users/user.reducer';
+import { usersAdapter, usersReducer, UsersState } from './user-entity/user.reducer';
+// import { userAdapter, UsersReducer, UsersState, UserState } from './users/user.reducer';
+// import { userAdapter, userReducer, UserState } from './users/user.reducer';
 
 
 export interface Order{
@@ -15,10 +17,10 @@ export interface Order{
   total:number;
 }
 
-export const usersFeatureKey = 'users';
+// export const usersFeatureKey = 'users';
 
 export interface AppState {
-  users:UsersState
+  users:UsersState;
   // users:{
   //   enetities:{[id:number]:UserState};
   //   selectedUserId:number| null;
@@ -30,8 +32,19 @@ export interface AppState {
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-users:UsersReducer
+
+users:usersReducer
 };
 
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];
+
+export const selectUserState = createFeatureSelector<UsersState>('users');
+
+export const { selectAll: selectAllUsers } = usersAdapter.getSelectors(selectUserState);
+// export const selectLoading = createSelector(selectUserState, (state) => state.entities);
+export const selectAllEntities = createSelector(
+  selectUserState,
+  (state) => state.entities
+);
+

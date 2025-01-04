@@ -1,37 +1,47 @@
-import { createReducer, on } from '@ngrx/store';
-import { UserActions } from './user.actions';
-export * as UserAction from './user.actions';
-export const userFeatureKey = 'user';
+// import { createReducer, on } from '@ngrx/store';
+// // import { UserActions } from './user.actions';
+// export * as UserActions from './user.actions';
+// export const userFeatureKey = 'user';
 
-export interface UsersState {
-  id: number;
-  name: string;
-}
+// export interface User {
+//   id: number;
+//   name: string;
+// }
 
-export const initialState: UsersState = {
-id:-1,
-name:'',
-};
+// // export const initialState: UsersState = {
+// // id:-1,
+// // name:'',
+// // };
 
-export const UsersReducer = createReducer(
-  initialState,
-  on(UserActions.loadUsers,(state,action)=>{
-    console.log(UserActions.loadUsers,state)
-    return state = {...state}
-  }),
-  on(UserActions.loadUsersFail,(state,action)=>{
-    console.log(UserActions.loadUsersFail,state)
-    return state;
-  }),
-  on(UserActions.loadUsersSuccess,(state,action)=>{
-    debugger;
-    console.log(UserActions.loadUsersSuccess,state)
-    return state;
-  }),
-  on(UserActions.loadedUsers,(state,action)=>{
-    debugger;
-    console.log(UserActions.loadedUsers,state)
-    return state;
-  }),
-);
+// import { createEntityAdapter, Dictionary, EntityAdapter, EntityState } from '@ngrx/entity';
+// import * as UserActions from './user.actions';
 
+// export interface UserState extends EntityState<UserState> {
+//   loading: boolean;
+//   users: User[];
+//   ids: string[] | number[];
+//   entities: Dictionary<UserState>;
+// }
+
+// export const userAdapter: EntityAdapter<UserState> = createEntityAdapter<UserState>();
+
+// const initialState: UserState = userAdapter.getInitialState({
+//   loading: false,
+//   users:[]
+// });
+
+// export const userReducer = createReducer(
+//   initialState,
+//   on(UserActions.loadUsers, (state) => {
+//     console.log('loadUsers ',state)
+//     return { ...state, loading: true }
+//   }),
+//   on(UserActions.loadUsersSuccess, (state, { users }) => {
+//     debugger
+//     console.log(state);
+//     return userAdapter.setAll(users, { ...state, loading: false })
+//   }
+
+//   ),
+//   on(UserActions.loadUsersFailure, (state) => ({ ...state, loading: false }))
+// );

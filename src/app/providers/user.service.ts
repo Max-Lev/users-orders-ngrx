@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { UsersState } from '../app-store/users/user.reducer';
+// import { User, UserState } from '../app-store/users/user.reducer';
 import { environment } from 'src/environments/environment.development';
 import { Observable } from 'rxjs';
+import { User } from '../app-store/user-entity/user.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -14,8 +15,8 @@ export class UserService {
 
   }
 
-  getUsers():Observable<UsersState[]>{
-    return this.http.get<UsersState[]>(environment.getUsersApi)
+  getUsers():Observable<User[]>{
+    return this.http.get<User[]>(environment.getUsersApi)
   }
 
 
