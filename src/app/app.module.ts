@@ -10,8 +10,9 @@ import { HttpClientModule } from '@angular/common/http';
 // import { userReducer } from './app-store/users/user.reducer';
 import { provideEffects } from '@ngrx/effects';
 // import { UserEffects } from './providers/users.effect';
-import { usersReducer } from './app-store/user-entity/user.reducer';
-import{UsersState} from './app-store/user-entity/user.reducer';
+import { usersEntityReducer } from './app-store/user-entity/user-entity.reducer';
+import{UsersEntityState} from './app-store/user-entity/user-entity.reducer';
+import { usersLoadReducer } from './app-store/users/user.reducer';
 // import { selectUserState } from './app-store';
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import{UsersState} from './app-store/user-entity/user.reducer';
     // provideStore(),
     // provideEffects(UserEffects),
     provideStore({
-      users: usersReducer,
+      usersEntityState: usersEntityReducer,
+      usersLoadState:usersLoadReducer,
     }),
     // provideEffects(UserEffects),
   ],
