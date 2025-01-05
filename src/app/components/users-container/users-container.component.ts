@@ -20,21 +20,21 @@ export class UsersContainerComponent implements OnInit {
 
   store = inject(Store);
 
-  // users$: Observable<(User | undefined)[]> = new Observable();
-  users: User[] = [];
-  s = this.store.select(selectAll).pipe(map((userEntity) => Object.values(userEntity).flat()))
-    .subscribe(v => this.users = v);
+  users$: Observable<(User)[]> = new Observable();
+  // users: User[] = [];
+  // s = this.store.select(selectAll).pipe(map((userEntity) => Object.values(userEntity).flat()))
+    // .subscribe(v => this.users = v);
 
   ngOnInit(): void {
-    this.getEntities().then(v => console.log(v))
-
+    // this.getEntities().then(v => console.log(v))
+    this.users$ = this.store.select(selectAll).pipe(map((userEntity) => Object.values(userEntity).flat()));
   }
 
-  async getEntities(): Promise<any> {
-    const entities = await firstValueFrom(this.store.select(selectAllEntities));
-    console.log(entities); // Logs the state.entities
-    return entities;
-  }
+  // async getEntities(): Promise<any> {
+  //   const entities = await firstValueFrom(this.store.select(selectAllEntities));
+  //   console.log(entities); // Logs the state.entities
+  //   return entities;
+  // }
 
 
 
