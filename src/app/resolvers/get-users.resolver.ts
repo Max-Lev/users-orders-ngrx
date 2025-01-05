@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, first, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../providers/user.service';
 import { UserActions } from '../app-store/user-entity/user-entity.actions';
-import { selectAllUsers } from '../app-store';
+import { selectAll } from '../app-store';
 import { User } from '../app-store/user-entity/user.model';
 import { loadUsersFailure, loadUsersSuccess } from '../app-store/users/user.actions';
 
@@ -16,7 +16,7 @@ export class UsersResolver {
   readonly userService = inject(UserService);
 
   resolve(): Observable<User[]> {
-    return this.store.select(selectAllUsers).pipe(
+    return this.store.select(selectAll).pipe(
       first(), // Take the current state of the users
       switchMap((users) => {
         if (users.length) {

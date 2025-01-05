@@ -5,18 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideStore, StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { UsersReducer } from './app-store/users/user.reducer';
 import { HttpClientModule } from '@angular/common/http';
-// import { userReducer } from './app-store/users/user.reducer';
-import { provideEffects } from '@ngrx/effects';
-// import { UserEffects } from './providers/users.effect';
 import { usersEntityReducer } from './app-store/user-entity/user-entity.reducer';
-import{UsersEntityState} from './app-store/user-entity/user-entity.reducer';
 import { usersLoadReducer } from './app-store/users/user.reducer';
-// import { selectUserState } from './app-store';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { UsersTableComponent } from './components/users-table/users-table.component';
+
 @NgModule({
   declarations: [
     AppComponent,
+    // UsersTableComponent,
 
   ],
   imports: [
@@ -25,7 +25,7 @@ import { usersLoadReducer } from './app-store/users/user.reducer';
     HttpClientModule,
     // StoreModule.forFeature(usersFeatureKey, usersFeature.reducer),
     // StoreModule.forRoot({users: usersReducer}, {}),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     // provideStore(),

@@ -18,11 +18,11 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     
     this.store.subscribe(s=>{
-      console.log(s);
+      // console.log(s);
     });
 
     this.store.select(selectAllEntities).subscribe((s:Dictionary<User>)=>{
-      console.log(s)
+      // console.log(s)
     })
 
    }

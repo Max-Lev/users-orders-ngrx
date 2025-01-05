@@ -42,14 +42,21 @@ usersLoadState:usersLoadReducer
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];
 
-export const selectUserState = createFeatureSelector<UsersEntityState>('usersEntityState');
+export const selectUserEntitiesState = createFeatureSelector<UsersEntityState>('usersEntityState');
 
-export const { selectAll: selectAllUsers } = usersEntityAdapter.getSelectors(selectUserState);
+// export const { selectAll: selectAllUsers } = usersEntityAdapter.getSelectors(selectUserEntitiesState);
+
 export const selectAllEntities = createSelector(
-  selectUserState,
+  selectUserEntitiesState,
   (state) => {
     console.log(state)
     return state.entities;
   }
 );
+export const {
+  selectAll, // Returns all entities as an array
+  selectEntities, // Returns entities as a dictionary (key-value pair)
+  selectIds, // Returns the array of IDs
+  selectTotal, // Returns the total count of entities
+} = usersEntityAdapter.getSelectors(selectUserEntitiesState); // Replace `selectUserState` with the feature selector
 

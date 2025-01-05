@@ -7,14 +7,14 @@ export const usersEntityFeatureKey = 'usersEntityFeatureKey';
 
 export interface UsersEntityState extends EntityState<User> {
   // Add custom properties here if needed
-  
+  selectedUserId: number | null;
 }
 
 export const usersEntityAdapter: UsersEntityAdapter<User> = createEntityAdapter<User>();
 
 export const initialState: UsersEntityState = usersEntityAdapter.getInitialState({
   // Add custom properties here if needed
-  
+  selectedUserId: null
 });
 
 export const usersEntityReducer = createReducer(
@@ -28,22 +28,31 @@ export const usersEntityReducer = createReducer(
   on(UserActions.deleteUser, (state, action) => usersEntityAdapter.removeOne(action.id, state)),
   on(UserActions.deleteUsers, (state, action) => usersEntityAdapter.removeMany(action.ids, state)),
   on(UserActions.loadUsers, (state, action) => {
-    console.log({...state});
-    const all =  usersEntityAdapter.setAll(action.users, state);
+    const all = usersEntityAdapter.setAll(action.users, state);
     console.log(all)
     return all;
   }),
   on(UserActions.clearUsers, (state) => usersEntityAdapter.removeAll(state)),
-  
+
 );
 
 // export const usersFeature = createFeature({
 //   name: usersEntityFeatureKey,
 //   reducer: usersEntityReducer,
 //   extraSelectors: ({ selectUsersState }) => ({
-//     ...usersAdapter.getSelectors(selectUsersState),
+//     ...usersEntityAdapter.getSelectors(selectUsersState),
 //   }),
 // });
+
+// export const {
+//   selectAll, // Returns all entities as an array
+//   selectEntities, // Returns entities as a dictionary (key-value pair)
+//   selectIds, // Returns the array of IDs
+//   selectTotal, // Returns the total count of entities
+// } = usersEntityAdapter.getSelectors(); // Replace `selectUserState` with the feature selector
+
+
+
 
 // export const {
 //   selectIds,
