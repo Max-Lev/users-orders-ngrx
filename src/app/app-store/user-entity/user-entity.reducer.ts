@@ -24,6 +24,16 @@ export const usersEntityReducer = createReducer(
   on(UserActions.addUsers, (state, action) => usersEntityAdapter.addMany(action.users, state)),
   on(UserActions.upsertUsers, (state, action) => usersEntityAdapter.upsertMany(action.users, state)),
   on(UserActions.updateUser, (state, action) => usersEntityAdapter.updateOne(action.user, state)),
+  // on(UserActions.selectedUser, (state, action) => ({...state,...{selectedUserId:action.user.id}})),
+  on(UserActions.selectedUser, (state, action) => {
+    const slectedUser = {
+      ...state, ...{
+        selectedUserId: +action.user.id
+      }
+    }
+    console.log('slectedUser', slectedUser);
+    return slectedUser;
+  }),
   on(UserActions.updateUsers, (state, action) => usersEntityAdapter.updateMany(action.users, state)),
   on(UserActions.deleteUser, (state, action) => usersEntityAdapter.removeOne(action.id, state)),
   on(UserActions.deleteUsers, (state, action) => usersEntityAdapter.removeMany(action.ids, state)),

@@ -21,9 +21,9 @@ export class AppComponent implements OnInit{
       // console.log(s);
     });
 
-    this.store.select(selectAllEntities).subscribe((s:Dictionary<User>)=>{
-      // console.log(s)
-    })
+    // this.store.select(selectAllEntities).subscribe((s:Dictionary<User>)=>{
+    //   // console.log(s)
+    // })
 
    }
 

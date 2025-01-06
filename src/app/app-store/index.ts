@@ -8,6 +8,7 @@ import {
 } from '@ngrx/store';
 import { usersEntityAdapter, usersEntityReducer, UsersEntityState } from './user-entity/user-entity.reducer';
 import { usersLoadReducer, UsersLoadState } from './users/user.reducer';
+import { User } from './user-entity/user.model';
 // import { userAdapter, UsersReducer, UsersState, UserState } from './users/user.reducer';
 // import { userAdapter, userReducer, UserState } from './users/user.reducer';
 
@@ -50,13 +51,33 @@ export const selectAllEntities = createSelector(
   selectUserEntitiesState,
   (state) => {
     console.log(state)
-    return state.entities;
+    return Object.values(state.entities);
   }
 );
+
 export const {
   selectAll, // Returns all entities as an array
   selectEntities, // Returns entities as a dictionary (key-value pair)
   selectIds, // Returns the array of IDs
   selectTotal, // Returns the total count of entities
 } = usersEntityAdapter.getSelectors(selectUserEntitiesState); // Replace `selectUserState` with the feature selector
+
+// Custom selector to get the selected user ID
+export const selectedUserId =createSelector(
+  selectUserEntitiesState,
+  (state: UsersEntityState) => {
+    console.log('selectedUserId ',state.selectedUserId)
+    return state.selectedUserId
+  }
+);
+
+// Custom selector to get the selected user entity
+export const selectedUser = createSelector(
+  selectEntities, // Get the dictionary of entities
+  selectedUserId, // Get the selected user ID
+  (entities, selectedUserId) => {
+    console.log('selectedUser ',entities,selectedUserId);
+    return (selectedUserId ? entities[selectedUserId] : null) // Find the selected user
+  }
+);
 
