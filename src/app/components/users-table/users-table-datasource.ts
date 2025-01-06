@@ -1,4 +1,4 @@
-import { DataSource } from '@angular/cdk/collections';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
@@ -6,7 +6,7 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 import { User } from 'src/app/app-store/user-entity/user.model';
 
 /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-export const displayedColumns = ['id', 'name'];
+export const displayedColumns = ['id', 'name','edit','delete'];
 
 // TODO: replace this with real data from your application
 // export const EXAMPLE_DATA: UsersTableItem[] = [
@@ -91,3 +91,6 @@ export class UsersTableDataSource extends DataSource<User> {
 function compare(a: string | number, b: string | number, isAsc: boolean): number {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
+
+

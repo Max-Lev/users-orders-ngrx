@@ -1,4 +1,16 @@
-
 <div class="container">
-    <app-users-table [users$]="users$"></app-users-table>
+
+    <div class="form-layout">
+        <form [formGroup]="userForm">
+            <mat-form-field class="example-full-width">
+                <mat-label>User Name</mat-label>
+                <input matInput formControlName="userName">
+            </mat-form-field>
+        </form>
+        <div class="save-btn">
+            <button mat-flat-button color="primary">Save</button>
+        </div>
+    </div>
+
+    <app-users-table (editUserEmitter)="editUserHandler($event)" [users$]="users$"></app-users-table>
 </div>

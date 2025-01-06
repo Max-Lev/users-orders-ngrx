@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { UsersTableComponent } from './components/users-table/users-table.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { UsersTableComponent } from './components/users-table/users-table.compon
       usersEntityState: usersEntityReducer,
       usersLoadState:usersLoadReducer,
     }),
+    importProvidersFrom(MatNativeDateModule)
     // provideEffects(UserEffects),
   ],
   bootstrap: [AppComponent]
