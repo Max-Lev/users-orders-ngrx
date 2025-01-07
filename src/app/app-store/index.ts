@@ -80,4 +80,20 @@ export const selectedUser = createSelector(
     return (selectedUserId ? entities[selectedUserId] : null) // Find the selected user
   }
 );
+export const getUserActionType = createSelector(
+  selectUserEntitiesState,
+  (state) => {
+    console.log(state.action)
+    return state.action;
+  }
+);
+
+// export const getEntitiesIds =createSelector(
+//   selectUserEntitiesState,
+//   (state: UsersEntityState) => {
+//     console.log('selectedUserId ',state.ids);
+//     debugger
+//     return state.ids.length ? Math.max(...state.ids.map((id) => Number(id))) : null; ;
+//   }
+// );
 

@@ -1,4 +1,4 @@
-import { importProvidersFrom, NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +13,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { UsersTableComponent } from './components/users-table/users-table.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment.development';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     // StoreModule.forFeature(usersFeatureKey, usersFeature.reducer),
     // StoreModule.forRoot({users: usersReducer}, {}),
     BrowserAnimationsModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.development }),
   ],
   providers: [
     // provideStore(),
@@ -35,7 +38,15 @@ import { MatNativeDateModule } from '@angular/material/core';
       usersEntityState: usersEntityReducer,
       usersLoadState:usersLoadReducer,
     }),
-    importProvidersFrom(MatNativeDateModule)
+    provideStoreDevtools({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.development, // Restrict extension to log-only mode
+      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
+      trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
+      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
+      // connectInZone: true // If set to true, the connection is established within the Angular zone
+    })
+    // importProvidersFrom(MatNativeDateModule)
     // provideEffects(UserEffects),
   ],
   bootstrap: [AppComponent]

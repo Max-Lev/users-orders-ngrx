@@ -1,9 +1,9 @@
 import { AsyncPipe, NgForOf } from '@angular/common';
 import { AfterViewInit, Component, effect, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
-import { Dictionary } from '@ngrx/entity';
+import { Dictionary, Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
-import { firstValueFrom, map, Observable, of, toArray } from 'rxjs';
-import { selectAll, selectAllEntities, selectedUser, selectedUserId } from 'src/app/app-store';
+
+import { getUserActionType, selectAll, selectAllEntities, selectedUser, selectedUserId } from 'src/app/app-store';
 import { User } from 'src/app/app-store/user-entity/user.model';
 import { UsersTableComponent } from '../users-table/users-table.component';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UserActions } from 'src/app/app-store/user-entity/user-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
+
 @Component({
   selector: 'app-users-container',
   templateUrl: './users-container.component.html',
@@ -29,40 +30,69 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
 
   formBuilder = inject(FormBuilder);
 
-  userForm: FormGroup = this.formBuilder.group({ userName: new FormControl('', [Validators.required]) });
+  userForm: FormGroup = this.formBuilder.group({ userName: new FormControl('', [Validators.required, Validators.nullValidator]) });
 
-  users$: Observable<(User)[]> = of([]);
+  selectedUserSignal$: Signal<User | null | undefined> = signal<User | null | undefined>(null);
 
-  selectedUserSignal$: Signal<User | null | undefined> = signal<User | null | undefined>(undefined);
+  actionType$: Signal<string | undefined> = signal<string | undefined>('');
 
   constructor() {
 
     this.selectedUserSignal$ = toSignal(this.store.select(selectedUser))
     this.setUserNameCntrl();
+    this.actionType$ = toSignal(this.store.select(getUserActionType));
 
   }
 
   ngOnInit(): void {
-    this.users$ = this.store.select(selectAll).pipe(map((userEntity) => Object.values(userEntity).flat()));
+
   }
 
   ngAfterViewInit(): void {
 
-    // this.store.dispatch(UserActions.selectedUser({user}))
-    // this.store.select(selectedUser).pipe(
-    //   map((selectedUser) => {
-    //     console.log('selectedUser ', selectedUser);
-    //     return selectedUser;
-    //   })
-    // );
-
   }
 
   setUserNameCntrl() {
+
     effect(() => this.userForm.get('userName')?.setValue(this.selectedUserSignal$()?.name));
   }
 
   editUserHandler(user: User) {
+
+  }
+
+  save() {
+    // this.actionType$() === '[User/API] Selected User' &&
+    if (this.userForm.valid && this.selectedUserSignal$() !== null) {
+
+      const user = this.selectedUserSignal$()!;
+
+      const name = this.userForm.get('userName')?.value;
+
+      const selectedUser: Update<User> = { id: user.id, changes: { ...user, name: name } };
+
+      this.store.dispatch(UserActions.updateUser({ user: selectedUser }));
+
+      this.clearForm();
+      
+
+    } else if (this.userForm.valid) {
+
+      const name = this.userForm.get('userName')?.value;
+
+      this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));
+
+      this.clearForm();
+
+    }
+
+  }
+
+  clearForm() {
+    this.store.dispatch(UserActions.selectedUser({ user: null }));
+    this.userForm.get('userName')?.setValue(null);
+    this.userForm.updateValueAndValidity();
+    this.userForm.reset();
 
   }
 

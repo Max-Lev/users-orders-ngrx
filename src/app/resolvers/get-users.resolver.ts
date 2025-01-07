@@ -20,7 +20,6 @@ export class UsersResolver {
       first(), // Take the current state of the users
       switchMap((users) => {
         if (users.length) {
-          debugger
           // If users already exist in the store, do nothing
           return of();
         }

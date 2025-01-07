@@ -8,6 +8,7 @@ export const usersEntityFeatureKey = 'usersEntityFeatureKey';
 export interface UsersEntityState extends EntityState<User> {
   // Add custom properties here if needed
   selectedUserId: number | null;
+  action?:string;
 }
 
 export const usersEntityAdapter: UsersEntityAdapter<User> = createEntityAdapter<User>();
@@ -19,16 +20,34 @@ export const initialState: UsersEntityState = usersEntityAdapter.getInitialState
 
 export const usersEntityReducer = createReducer(
   initialState,
-  on(UserActions.addUser, (state, action) => usersEntityAdapter.addOne(action.user, state)),
+  
+  on(UserActions.addUser, (state, action) => {
+    let uuid = state.ids.length ? Math.max(...state.ids.map((id) => Number(id))) : null;
+    action = {...action,...{
+      user:{
+        name:action.user.name,
+        id:++uuid!
+      }
+    }};
+    return usersEntityAdapter.addOne(action.user, state);
+  }),
+
   on(UserActions.upsertUser, (state, action) => usersEntityAdapter.upsertOne(action.user, state)),
+  
   on(UserActions.addUsers, (state, action) => usersEntityAdapter.addMany(action.users, state)),
+
   on(UserActions.upsertUsers, (state, action) => usersEntityAdapter.upsertMany(action.users, state)),
-  on(UserActions.updateUser, (state, action) => usersEntityAdapter.updateOne(action.user, state)),
-  // on(UserActions.selectedUser, (state, action) => ({...state,...{selectedUserId:action.user.id}})),
+  
+  on(UserActions.updateUser, (state, action) => {
+    
+    return usersEntityAdapter.updateOne(action.user, state);
+  }),
+  
   on(UserActions.selectedUser, (state, action) => {
     const slectedUser = {
       ...state, ...{
-        selectedUserId: +action.user.id
+        selectedUserId: action.user && +action.user.id,
+        action:action.type
       }
     }
     console.log('slectedUser', slectedUser);
