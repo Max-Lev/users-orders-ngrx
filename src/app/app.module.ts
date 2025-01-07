@@ -10,6 +10,7 @@ import { usersEntityReducer } from './app-store/users-entity/users-entity.reduce
 import { usersLoadReducer } from './app-store/users/user.reducer';
 import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment.development';
+import { ordersReducer } from './app-store/orders-entity/orders.reducer';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { environment } from 'src/environments/environment.development';
     // provideStore(),
     // provideEffects(UserEffects),
     provideStore({
-      users: usersEntityReducer,
       usersLoadState:usersLoadReducer,
+      users: usersEntityReducer,
+      orders:ordersReducer,
     }),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
@@ -41,7 +43,6 @@ import { environment } from 'src/environments/environment.development';
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       // connectInZone: true // If set to true, the connection is established within the Angular zone
     })
-    // importProvidersFrom(MatNativeDateModule)
     // provideEffects(UserEffects),
   ],
   bootstrap: [AppComponent]

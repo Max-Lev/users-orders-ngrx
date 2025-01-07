@@ -16,7 +16,7 @@ export class UserService {
   }
 
   getUsers():Observable<User[]>{
-    return this.http.get<User[]>(environment.getUsersApi)
+    return this.http.get<User[]>(environment.getUsersApi);
   }
 
 

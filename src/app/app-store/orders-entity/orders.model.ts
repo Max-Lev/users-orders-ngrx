@@ -1,3 +1,5 @@
-export interface Orders {
-  id: string;
+export interface Orders{
+  id:number;
+  userId:number;
+  total:number;
 }

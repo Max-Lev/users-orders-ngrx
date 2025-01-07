@@ -1,59 +1,59 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Orders } from './orders.model';
+import { EntityState, EntityAdapter as OrdersEntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { Orders as Orders } from './orders.model';
 import { OrdersActions } from './orders.actions';
 
-export const ordersesFeatureKey = 'orderses';
+export const ordersFeatureKey = 'orders';
 
-export interface State extends EntityState<Orders> {
+export interface OrdersEntityState extends EntityState<Orders> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Orders> = createEntityAdapter<Orders>();
+export const ordersEntityAdapter: OrdersEntityAdapter<Orders> = createEntityAdapter<Orders>();
 
-export const initialState: State = adapter.getInitialState({
+export const initialState: OrdersEntityState = ordersEntityAdapter.getInitialState({
   // additional entity state properties
 });
 
-export const reducer = createReducer(
+export const ordersReducer = createReducer(
   initialState,
+  on(OrdersActions.addOrder,
+    (state, action) => ordersEntityAdapter.addOne(action.orders, state)
+  ),
+  on(OrdersActions.upsertOrder,
+    (state, action) => ordersEntityAdapter.upsertOne(action.orders, state)
+  ),
   on(OrdersActions.addOrders,
-    (state, action) => adapter.addOne(action.orders, state)
+    (state, action) => ordersEntityAdapter.addMany(action.orders, state)
   ),
   on(OrdersActions.upsertOrders,
-    (state, action) => adapter.upsertOne(action.orders, state)
+    (state, action) => ordersEntityAdapter.upsertMany(action.orders, state)
   ),
-  on(OrdersActions.addOrderss,
-    (state, action) => adapter.addMany(action.orderss, state)
-  ),
-  on(OrdersActions.upsertOrderss,
-    (state, action) => adapter.upsertMany(action.orderss, state)
+  on(OrdersActions.updateOrder,
+    (state, action) => ordersEntityAdapter.updateOne(action.orders, state)
   ),
   on(OrdersActions.updateOrders,
-    (state, action) => adapter.updateOne(action.orders, state)
+    (state, action) => ordersEntityAdapter.updateMany(action.orders, state)
   ),
-  on(OrdersActions.updateOrderss,
-    (state, action) => adapter.updateMany(action.orderss, state)
+  on(OrdersActions.deleteOrder,
+    (state, action) => ordersEntityAdapter.removeOne(action.id, state)
   ),
   on(OrdersActions.deleteOrders,
-    (state, action) => adapter.removeOne(action.id, state)
+    (state, action) => ordersEntityAdapter.removeMany(action.ids, state)
   ),
-  on(OrdersActions.deleteOrderss,
-    (state, action) => adapter.removeMany(action.ids, state)
+  on(OrdersActions.loadOrders,
+    (state, action) => ordersEntityAdapter.setAll(action.orders, state)
   ),
-  on(OrdersActions.loadOrderss,
-    (state, action) => adapter.setAll(action.orderss, state)
-  ),
-  on(OrdersActions.clearOrderss,
-    state => adapter.removeAll(state)
+  on(OrdersActions.clearOrders,
+    state => ordersEntityAdapter.removeAll(state)
   ),
 );
 
 export const ordersesFeature = createFeature({
-  name: ordersesFeatureKey,
-  reducer,
-  extraSelectors: ({ selectOrdersesState }) => ({
-    ...adapter.getSelectors(selectOrdersesState)
+  name: ordersFeatureKey,
+  reducer: ordersReducer,
+  extraSelectors: ({ selectOrdersState }) => ({
+    ...ordersEntityAdapter.getSelectors(selectOrdersState)
   }),
 });
 

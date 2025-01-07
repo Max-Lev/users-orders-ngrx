@@ -9,21 +9,15 @@ import {
 import { usersEntityAdapter, usersEntityFeatureKey, usersEntityReducer, UsersEntityState } from './users-entity/users-entity.reducer';
 import { usersLoadReducer, UsersLoadState } from './users/user.reducer';
 import { User } from './users-entity/user.model';
-// import { userAdapter, UsersReducer, UsersState, UserState } from './users/user.reducer';
-// import { userAdapter, userReducer, UserState } from './users/user.reducer';
+import { OrdersEntityState, ordersReducer } from './orders-entity/orders.reducer';
 
-
-export interface Order{
-  id:number;
-  userId:number;
-  total:number;
-}
 
 // export const usersFeatureKey = 'users';
 
 export interface AppState {
   usersLoadState:UsersLoadState;
   users:UsersEntityState;
+  orders:OrdersEntityState;
   // users:{
   //   enetities:{[id:number]:UsersEntityState};
   //   selectedUserId:number| null;
@@ -38,6 +32,7 @@ export const reducers: ActionReducerMap<AppState> = {
 
 users:usersEntityReducer,
 usersLoadState:usersLoadReducer,
+orders:ordersReducer
 // users:usersEntityReducer
 };
 
