@@ -4,9 +4,9 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, first, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../providers/user.service';
-import { UserActions } from '../app-store/user-entity/user-entity.actions';
+import { UserActions } from '../app-store/users-entity/users-entity.actions';
 import { selectAll } from '../app-store';
-import { User } from '../app-store/user-entity/user.model';
+import { User } from '../app-store/users-entity/user.model';
 import { loadUsersFailure, loadUsersSuccess } from '../app-store/users/user.actions';
 
 @Injectable({ providedIn: 'root' })
@@ -25,15 +25,17 @@ export class UsersResolver {
         }
         // If users are empty, fetch from the API
         return this.userService.getUsers().pipe(
-          tap((fetchedUsers) => {
+          tap((fetchedUsers:User[]) => {
             this.store.dispatch(loadUsersSuccess({ usersLoadState: { loadingSuccess: true, errorMsg: null } }));
             this.store.dispatch(UserActions.loadUsers({ users: fetchedUsers }));
           }),
+
           catchError((error) => {
             console.error('Error fetching users:', error);
             this.store.dispatch(loadUsersFailure({ error }));
             return of();
           })
+
         );
       })
     );

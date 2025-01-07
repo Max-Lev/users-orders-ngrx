@@ -2,13 +2,13 @@ import { AfterContentInit, AfterViewInit, Component, effect, inject, OnInit, Vie
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { User } from 'src/app/app-store/user-entity/user.model';
+import { User } from 'src/app/app-store/users-entity/user.model';
 import { NgForOf, AsyncPipe, NgIf } from '@angular/common';
 import { displayedColumns } from './users-table-datasource';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
-import { UserActions } from 'src/app/app-store/user-entity/user-entity.actions';
+import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectAllEntities as getAllUserEntities } from 'src/app/app-store';
 @Component({

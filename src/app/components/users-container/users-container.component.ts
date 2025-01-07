@@ -4,14 +4,14 @@ import { Dictionary, Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
 
 import { getUserActionType, selectAll, selectAllEntities, selectedUser, selectedUserId } from 'src/app/app-store';
-import { User } from 'src/app/app-store/user-entity/user.model';
+import { User } from 'src/app/app-store/users-entity/user.model';
 import { UsersTableComponent } from '../users-table/users-table.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { UserActions } from 'src/app/app-store/user-entity/user-entity.actions';
+import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({

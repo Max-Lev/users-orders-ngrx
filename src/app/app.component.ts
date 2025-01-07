@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { selectAllEntities } from './app-store';
 import { Dictionary } from '@ngrx/entity';
-import { User } from './app-store/user-entity/user.model';
+import { User } from './app-store/users-entity/user.model';
 
 @Component({
   selector: 'app-root',

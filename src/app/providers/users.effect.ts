@@ -5,7 +5,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { UserService } from './user.service';
-import { UserActions } from '../app-store/user-entity/user-entity.actions';
+import { UserActions } from '../app-store/users-entity/users-entity.actions';
 
 @Injectable({ providedIn: 'root' })
 export class UserEffects {

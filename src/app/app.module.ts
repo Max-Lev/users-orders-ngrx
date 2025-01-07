@@ -1,4 +1,4 @@
-import { importProvidersFrom, NgModule, isDevMode } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -6,13 +6,8 @@ import { AppComponent } from './app.component';
 import { provideStore, StoreModule } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { usersEntityReducer } from './app-store/user-entity/user-entity.reducer';
+import { usersEntityReducer } from './app-store/users-entity/users-entity.reducer';
 import { usersLoadReducer } from './app-store/users/user.reducer';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
-import { UsersTableComponent } from './components/users-table/users-table.component';
-import { MatNativeDateModule } from '@angular/material/core';
 import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment.development';
 
@@ -35,7 +30,7 @@ import { environment } from 'src/environments/environment.development';
     // provideStore(),
     // provideEffects(UserEffects),
     provideStore({
-      usersEntityState: usersEntityReducer,
+      users: usersEntityReducer,
       usersLoadState:usersLoadReducer,
     }),
     provideStoreDevtools({
