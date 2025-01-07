@@ -63,6 +63,10 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
     this.store.dispatch(UserActions.selectedUser({ user }));
   }
 
+  deleteUser(user:User){
+    this.store.dispatch(UserActions.deleteUser({id:user.id}));
+  }
+
 }
 
 

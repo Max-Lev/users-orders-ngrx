@@ -18,7 +18,7 @@ export const UserActions = createActionGroup({
     'Selected User': props<{ user: User | null}>(),
 
     'Update Users': props<{ users: Update<User>[] }>(),
-    'Delete User': props<{ id: string }>(),
+    'Delete User': props<{ id: number }>(),
     'Delete Users': props<{ ids: string[] }>(),
     'Clear Users': emptyProps(),
   }
