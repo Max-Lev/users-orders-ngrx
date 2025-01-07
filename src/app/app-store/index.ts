@@ -9,7 +9,7 @@ import {
 import { usersEntityAdapter, usersEntityFeatureKey, usersEntityReducer, UsersEntityState } from './users-entity/users-entity.reducer';
 import { usersLoadReducer, UsersLoadState } from './users/user.reducer';
 import { User } from './users-entity/user.model';
-import { OrdersEntityState, ordersReducer } from './orders-entity/orders.reducer';
+import { OrdersEntityState, ordersFeatureKey, ordersReducer } from './orders-entity/orders.reducer';
 
 
 // export const usersFeatureKey = 'users';
@@ -44,10 +44,10 @@ export const selectUserEntitiesState = createFeatureSelector<UsersEntityState>(u
 
 // export const { selectAll: selectAllUsers } = usersEntityAdapter.getSelectors(selectUserEntitiesState);
 
-export const selectAllEntities = createSelector(
+export const selectAllUsersEntities = createSelector(
   selectUserEntitiesState,
   (state) => {
-    console.log(state)
+    // console.log(state)
     return Object.values(state.entities);
   }
 );
@@ -80,10 +80,29 @@ export const selectedUser = createSelector(
 export const getUserActionType = createSelector(
   selectUserEntitiesState,
   (state) => {
-    console.log(state.action)
+    // console.log(state.action)
     return state.action;
   }
 );
+
+
+export const selectOrdersEntitiesState = createFeatureSelector<OrdersEntityState>(ordersFeatureKey);
+export const selectAllOrdersEntities = createSelector(
+  selectOrdersEntitiesState,
+  (state) => {
+    // console.log(state)
+    return Object.values(state.entities);
+  }
+);
+
+export const selectUserOrders = createSelector(
+  selectOrdersEntitiesState,
+  selectUserEntitiesState,
+  (selectOrdersEntitiesState,selectUserEntitiesState)=>{
+    console.log(selectOrdersEntitiesState,selectUserEntitiesState);
+    debugger;
+  }
+)
 
 // export const getEntitiesIds =createSelector(
 //   selectUserEntitiesState,

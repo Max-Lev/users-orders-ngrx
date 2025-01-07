@@ -41,8 +41,12 @@ export const ordersReducer = createReducer(
   on(OrdersActions.deleteOrders,
     (state, action) => ordersEntityAdapter.removeMany(action.ids, state)
   ),
-  on(OrdersActions.loadOrders,
-    (state, action) => ordersEntityAdapter.setAll(action.orders, state)
+  on(OrdersActions.loadOrders, (state, action) => {
+
+    const loadOrders = ordersEntityAdapter.setAll(action.orders, state);
+    console.log(state);
+    return loadOrders;
+  }
   ),
   on(OrdersActions.clearOrders,
     state => ordersEntityAdapter.removeAll(state)

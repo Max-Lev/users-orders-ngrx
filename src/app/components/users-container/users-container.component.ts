@@ -3,7 +3,7 @@ import { AfterViewInit, Component, effect, inject, OnInit, signal, Signal, Writa
 import { Dictionary, Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
 
-import { getUserActionType, selectAll, selectAllEntities, selectedUser, selectedUserId } from 'src/app/app-store';
+import { getUserActionType, selectAll, selectAllOrdersEntities, selectAllUsersEntities, selectedUser, selectedUserId, selectUserOrders } from 'src/app/app-store';
 import { User } from 'src/app/app-store/users-entity/user.model';
 import { UsersTableComponent } from '../users-table/users-table.component';
 import { MatInputModule } from '@angular/material/input';
@@ -45,7 +45,8 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-
+    // this.store.select(selectAllOrdersEntities).subscribe(s=>console.log(s))
+    this.store.select(selectUserOrders).subscribe(s=>console.log(s))
   }
 
   ngAfterViewInit(): void {
