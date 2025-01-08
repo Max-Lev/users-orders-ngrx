@@ -10,9 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
 import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { selectAllUsersEntities as getAllUserEntities } from 'src/app/app-store';
 import { Update } from '@ngrx/entity';
-import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
+import { selectAllUsersEntities } from 'src/app/app-store';
+
 @Component({
   selector: 'app-users-table',
   templateUrl: './users-table.component.html',
@@ -40,7 +40,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
 
   constructor() {
 
-    const _users = toSignal(this.store.select(getAllUserEntities))
+    const _users = toSignal(this.store.select(selectAllUsersEntities))
     effect(() => {
       this.dataSource.data = _users() as User[];
     });
@@ -70,7 +70,6 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
 
   deleteUser(user:User){
     this.store.dispatch(UserActions.deleteUser({id:user.id}));
-    // this.store.dispatch(OrdersActions.deleteUserOrder({}))
   }
 
   selectedUser(user:User) {

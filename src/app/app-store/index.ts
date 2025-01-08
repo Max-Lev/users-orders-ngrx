@@ -12,6 +12,8 @@ import { User } from './users-entity/user.model';
 import { OrdersEntityState, ordersFeatureKey, ordersReducer, selectAll, selectOrdersEntitiesState } from './orders-entity/orders.reducer';
 import { Orders } from './orders-entity/orders.model';
 import { OrdersData } from '../components/user-orders/orders-table-datasource';
+import { Dictionary } from '@ngrx/entity';
+import { of } from 'rxjs';
 
 
 // export const usersFeatureKey = 'users';
@@ -46,22 +48,10 @@ export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];
 
 // export const { selectAll: selectAllUsers } = usersEntityAdapter.getSelectors(selectUserEntitiesState);
 
-export const selectAllUsersEntities = createSelector(
-  selectUserEntitiesState,
-  (state) => {
-    // console.log(state)
-    return Object.values(state.entities);
-  }
-);
+export const selectAllUsersEntities = createSelector(selectUserEntitiesState, (state) => Object.values(state.entities));
 
 // Custom selector to get the selected user ID
-export const selectedUserId = createSelector(
-  selectUserEntitiesState,
-  (state: UsersEntityState) => {
-    console.log('selectedUserId ', state.selectedUserId)
-    return state.selectedUserId
-  }
-);
+export const selectedUserId = createSelector(selectUserEntitiesState, (state: UsersEntityState) => state.selectedUserId);
 
 // Custom selector to get the selected user entity
 export const selectedUser = createSelector(
@@ -69,7 +59,6 @@ export const selectedUser = createSelector(
   selectedUserId, // Get the selected user ID
   selectUserEntitiesState,
   (entities, selectedUserId, selectUserEntitiesState) => {
-    console.log('selectedUser ', entities, selectedUserId, selectUserEntitiesState);
     return (selectedUserId ? entities[selectedUserId] : null) // Find the selected user
   }
 );
@@ -84,22 +73,20 @@ export const selectedUser = createSelector(
 //   }
 // );
 
-export const getUserActionType = createSelector(
-  selectUserEntitiesState,
-  (state) => {
-    // console.log(state.action)
-    return state.action;
-  }
-);
+export const getUserActionType = createSelector(selectUserEntitiesState, (state) => { return state.action });
 
 
-// export const selectOrdersEntitiesState = createFeatureSelector<OrdersEntityState>(ordersFeatureKey);
-export const selectAllOrdersEntities = createSelector(
-  selectOrdersEntitiesState,
-  (state) => {
-    return Object.values(state.entities);
-  }
-);
+export const selectAllOrdersEntities = createSelector(selectOrdersEntitiesState, (state) => Object.values(state.entities));
+
+// export const isUserExists = (name: string) => createSelector(selectEntities, (selectEntities: Dictionary<User>) => {
+//   const x =  Object.values(selectEntities).some((user) => user!.name.toLowerCase() === name.toLowerCase());
+//   return x;
+// });
+export const isUserExistsSelector = (name: string) =>
+  createSelector(selectEntities, (entities: Dictionary<User>) => {
+    console.log('isUserExists ', name)
+    return Object.values(entities).some((user) => user && user.name.toLowerCase() === name.toLowerCase());
+  });
 
 export const selectUserOrders = createSelector(
   selectAll,

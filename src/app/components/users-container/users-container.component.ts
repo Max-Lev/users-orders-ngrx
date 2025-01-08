@@ -1,8 +1,8 @@
 import { AsyncPipe, NgForOf } from '@angular/common';
-import { AfterViewInit, Component, effect, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
-import { getUserActionType, selectedUser, selectUserOrders } from 'src/app/app-store';
+import { getUserActionType, isUserExistsSelector, selectAllUsersEntities, selectedUser, selectUserOrders } from 'src/app/app-store';
 import { User } from 'src/app/app-store/users-entity/user.model';
 import { UsersTableComponent } from '../users-table/users-table.component';
 import { MatInputModule } from '@angular/material/input';
@@ -13,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { UserOrdersComponent } from '../user-orders/user-orders.component';
+
 
 @Component({
   selector: 'app-users-container',
@@ -33,9 +34,12 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
   userForm: FormGroup = this.formBuilder.group({ userName: new FormControl('', [Validators.required, Validators.nullValidator]) });
 
   selectedUserSignal$: Signal<User | null | undefined> = signal<User | null | undefined>(null);
-  // selectedUserSignal$$: Signal<string | null | undefined> = signal<string | null | undefined>(null);
 
   actionType$: Signal<string | undefined> = signal<string | undefined>('');
+
+  // isUserExistsSignal$: Signal<boolean | undefined> = toSignal(this.store.select(isUserExistsSelector('')));
+  isUserExistsSignal$ = toSignal(this.store.select(selectAllUsersEntities));
+  
 
   constructor() {
 
@@ -43,15 +47,10 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
     this.setUserNameCntrl();
     this.actionType$ = toSignal(this.store.select(getUserActionType));
 
-    // this.selectedUserSignal$$ = toSignal(this.store.select(updatedUser));
-    // effect(() => {
-    //   console.log(this.selectedUserSignal$$());
-    // })
-
   }
 
   ngOnInit(): void {
-    this.store.select(selectUserOrders).subscribe(s => console.log(s))
+    
   }
 
   ngAfterViewInit(): void {
@@ -63,12 +62,9 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
   }
 
   save() {
-    debugger;
-    // this.actionType$() === '[User/API] Selected User' &&
-    // UserActions.selectedUser.type
+
     if (this.actionType$() === UserActions.updateUser.type && this.userForm.valid && this.selectedUserSignal$() !== null) {
 
-      debugger;
       const user = this.selectedUserSignal$()!;
 
       const name = this.userForm.get('userName')?.value;
@@ -79,19 +75,30 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
 
       // this.clearForm();
 
+    }
+    // else if (this.userForm.valid) {
 
-    } 
-    else if (this.userForm.valid) {
+    //   debugger;
+    //   const name = this.userForm.get('userName')?.value;
 
-      debugger;
+    //   this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));
+
+    //   // this.clearForm();
+
+    // }
+
+  }
+
+  addUser() {
+    if (this.userForm.valid) {
       const name = this.userForm.get('userName')?.value;
 
-      this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));
-
-      // this.clearForm();
-
+      const _isUserExists = this.isUserExistsSignal$()?.some((user) => user && user.name.toLowerCase() === name.toLowerCase());
+      if (!_isUserExists) {
+        this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));
+        this.clearForm();
+      }
     }
-
   }
 
   clearForm() {
@@ -99,7 +106,6 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
     this.userForm.get('userName')?.setValue(null);
     this.userForm.updateValueAndValidity();
     this.userForm.reset();
-
   }
 
 
