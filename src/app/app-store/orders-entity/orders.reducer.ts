@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter as OrdersEntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Orders as Orders } from './orders.model';
 import { OrdersActions } from './orders.actions';
@@ -36,15 +36,17 @@ export const ordersReducer = createReducer(
     (state, action) => ordersEntityAdapter.updateMany(action.orders, state)
   ),
   on(OrdersActions.deleteOrder,
-    (state, action) => ordersEntityAdapter.removeOne(action.id, state)
+    (state, action) => {
+      return ordersEntityAdapter.removeOne(action.id, state);
+    }
   ),
+  
   on(OrdersActions.deleteOrders,
     (state, action) => ordersEntityAdapter.removeMany(action.ids, state)
   ),
   on(OrdersActions.loadOrders, (state, action) => {
 
     const loadOrders = ordersEntityAdapter.setAll(action.orders, state);
-    console.log(state);
     return loadOrders;
   }
   ),
@@ -52,6 +54,8 @@ export const ordersReducer = createReducer(
     state => ordersEntityAdapter.removeAll(state)
   ),
 );
+
+export const selectOrdersEntitiesState = createFeatureSelector<OrdersEntityState>(ordersFeatureKey);
 
 export const ordersesFeature = createFeature({
   name: ordersFeatureKey,

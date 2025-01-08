@@ -14,16 +14,12 @@ import { ordersReducer } from './app-store/orders-entity/orders.reducer';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    // UsersTableComponent,
-
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    // StoreModule.forFeature(usersFeatureKey, usersFeature.reducer),
-    // StoreModule.forRoot({users: usersReducer}, {}),
     BrowserAnimationsModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.development }),
   ],

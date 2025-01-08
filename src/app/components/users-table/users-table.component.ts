@@ -11,6 +11,8 @@ import { Store } from '@ngrx/store';
 import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { selectAllUsersEntities as getAllUserEntities } from 'src/app/app-store';
+import { Update } from '@ngrx/entity';
+import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
 @Component({
   selector: 'app-users-table',
   templateUrl: './users-table.component.html',
@@ -60,16 +62,21 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
 
 
   editUser(user: User) {
-    this.store.dispatch(UserActions.selectedUser({ user }));
+    // this.store.dispatch(UserActions.selectedUser({ user }));
+    const selectedUser: Update<User> = { id: user.id, changes: { ...user,name:user.name } };
+    this.store.dispatch(UserActions.updateUser({ user:selectedUser} ));
+    
   }
 
   deleteUser(user:User){
     this.store.dispatch(UserActions.deleteUser({id:user.id}));
+    // this.store.dispatch(OrdersActions.deleteUserOrder({}))
   }
 
-  selectedRow(user:User){
+  selectedUser(user:User) {
     this.store.dispatch(UserActions.selectedUser({ user }));
   }
+
 
 }
 

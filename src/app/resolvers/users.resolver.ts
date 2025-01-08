@@ -1,16 +1,16 @@
-import { inject, Injectable } from '@angular/core';
-import { Resolve, ResolveFn } from '@angular/router';
+import { inject } from '@angular/core';
+import {  ResolveFn } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, first, switchMap, tap } from 'rxjs/operators';
 import { UserService } from '../providers/user.service';
 import { UserActions } from '../app-store/users-entity/users-entity.actions';
-import { selectAll } from '../app-store';
 import { User } from '../app-store/users-entity/user.model';
 import { loadUsersFailure, loadUsersSuccess } from '../app-store/users/user.actions';
 import { OrdersService } from '../providers/orders.service';
 import { Orders } from '../app-store/orders-entity/orders.model';
 import { OrdersActions } from '../app-store/orders-entity/orders.actions';
+import { selectAll } from '../app-store/users-entity/users-entity.reducer';
 
 export const usersResolver: ResolveFn<Observable<User[] | Orders[]>> = (route, state) => {
   const store = inject(Store);

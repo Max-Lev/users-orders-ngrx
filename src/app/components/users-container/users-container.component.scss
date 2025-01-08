@@ -1,13 +1,17 @@
 :host {
-    .container{
-        border:1px solid gray;
-        padding:1rem;
+    .container {
+        border: 1px solid gray;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
     }
-    .form-layout{
+
+    .form-layout {
         display: flex;
         align-items: baseline;
     }
-    .save-btn{
+
+    .save-btn {
         margin-left: 1rem;
     }
 }

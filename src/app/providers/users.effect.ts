@@ -15,18 +15,10 @@ export class UserEffects {
 
   loadUsers$ = createEffect(() =>
     this.actions$.pipe(
-      tap(() => {
-        console.log('UserEffects')
-      }),
       ofType(UserActions.loadUsers), // Triggered by loadUsers action
       mergeMap(() => {
-        debugger;
         return this.userService.getUsers().pipe(
-          tap(() => {
-            console.log('users')
-          }),
           map((users) => {
-            console.log(users);
             return UserActions.loadUsersSuccess({ users });
           }),
           catchError((error) => of(UserActions.loadUsersFail({ error: error.message })))
