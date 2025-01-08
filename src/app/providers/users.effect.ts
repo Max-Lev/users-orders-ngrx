@@ -19,6 +19,7 @@ export class UserEffects {
       mergeMap(() => {
         return this.userService.getUsers().pipe(
           map((users) => {
+            console.log('effect',users);
             return UserActions.loadUsersSuccess({ users });
           }),
           catchError((error) => of(UserActions.loadUsersFail({ error: error.message })))

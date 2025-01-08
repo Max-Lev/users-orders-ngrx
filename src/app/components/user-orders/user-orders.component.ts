@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { selectUserOrders } from 'src/app/app-store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { OrdersTotalSumComponent } from '../orders-total-sum/orders-total-sum.component';
-import { Orders } from 'src/app/app-store/orders-entity/orders.model';
 import { MatButtonModule } from '@angular/material/button';
 import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
 
@@ -28,13 +27,8 @@ export class UserOrdersComponent {
   selectedUserOrdersSignal$:Signal<OrdersData[] | undefined> = signal([]);
   
   constructor(){
-
     this.selectedUserOrdersSignal$ = toSignal(this.store.select(selectUserOrders));
-
-    effect(()=>{
-      this.dataSource = this.selectedUserOrdersSignal$() as OrdersData[];
-    });
-    
+    effect(()=>this.dataSource = this.selectedUserOrdersSignal$() as OrdersData[]);
   }
 
   deleteOrder(order:OrdersData){

@@ -10,6 +10,8 @@ import { usersLoadReducer } from './app-store/users/user.reducer';
 import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment.development';
 import { ordersReducer } from './app-store/orders-entity/orders.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { UserEffects } from './providers/users.effect';
 
 
 @NgModule({
@@ -25,7 +27,7 @@ import { ordersReducer } from './app-store/orders-entity/orders.reducer';
   ],
   providers: [
     // provideStore(),
-    // provideEffects(UserEffects),
+    provideEffects(UserEffects),
     provideStore({
       usersLoadState:usersLoadReducer,
       users: usersEntityReducer,

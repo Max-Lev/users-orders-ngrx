@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, effect, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, effect, inject, signal, Signal, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -11,7 +11,9 @@ import { Store } from '@ngrx/store';
 import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Update } from '@ngrx/entity';
-import { selectAllUsersEntities } from 'src/app/app-store';
+import { selectAllUsersEntities, selectUserOrders } from 'src/app/app-store';
+import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
+import { OrdersData } from '../user-orders/orders-table-datasource';
 
 @Component({
   selector: 'app-users-table',
@@ -25,7 +27,7 @@ import { selectAllUsersEntities } from 'src/app/app-store';
     MatIconModule
   ],
 })
-export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentInit {
+export class UsersTableComponent {
 
   displayedColumns = displayedColumns;
   dataSource = new MatTableDataSource<User>();
@@ -38,21 +40,11 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
 
   store = inject(Store);
 
+  selectedUserOrders$ = toSignal(this.store.select(selectUserOrders));
+
   constructor() {
-
-    const _users = toSignal(this.store.select(selectAllUsersEntities))
-    effect(() => {
-      this.dataSource.data = _users() as User[];
-    });
-
-  }
-
-  ngOnInit(): void {
-
-  }
-
-  ngAfterContentInit() {
-
+    const _users$ = toSignal(this.store.select(selectAllUsersEntities))
+    effect(() => this.dataSource.data = _users$() as User[]);
   }
 
   ngAfterViewInit(): void {
@@ -60,15 +52,19 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
     this.dataSource.sort = this.sort;
   }
 
-
   editUser(user: User) {
     const selectedUser: Update<User> = { id: user.id, changes: { ...user, name: user.name } };
     this.store.dispatch(UserActions.updateUser({ user: selectedUser }));
-
   }
 
   deleteUser(user: User) {
+
     this.store.dispatch(UserActions.deleteUser({ id: user.id }));
+
+    const list: string[] = this.selectedUserOrders$()?.map(((order: OrdersData) => `${order.order}`))!;
+
+    this.store.dispatch(OrdersActions.deleteOrders({ ids: list }));
+
   }
 
   selectedUser(user: User) {

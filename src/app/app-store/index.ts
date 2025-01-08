@@ -32,8 +32,7 @@ export const selectedUserId = createSelector(selectUserEntitiesState, (state: Us
 export const selectedUser = createSelector(
   selectEntities, // Get the dictionary of entities
   selectedUserId, // Get the selected user ID
-  selectUserEntitiesState,
-  (entities, selectedUserId, selectUserEntitiesState) => {
+  (entities, selectedUserId) => {
     return (selectedUserId ? entities[selectedUserId] : null) // Find the selected user
   }
 );

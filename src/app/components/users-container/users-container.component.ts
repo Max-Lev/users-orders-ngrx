@@ -1,4 +1,4 @@
-import { AsyncPipe, NgForOf } from '@angular/common';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 import { Component, effect, inject, signal, Signal } from '@angular/core';
 import { Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
@@ -21,7 +21,7 @@ import { UserOrdersComponent } from '../user-orders/user-orders.component';
   styleUrls: ['./users-container.component.scss'],
   standalone: true,
   imports: [NgForOf, AsyncPipe, UsersTableComponent, ReactiveFormsModule,
-    MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule, MatIconModule,
+    NgIf,MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule, MatIconModule,
     UserOrdersComponent],
 
 })
@@ -33,7 +33,7 @@ export class UsersContainerComponent {
 
   userForm: FormGroup = this.formBuilder.group({ userName: new FormControl('', [Validators.required, Validators.nullValidator]) });
 
-  selectedUserSignal$: Signal<User | null | undefined> = signal<User | null | undefined>(null);
+  selectedUser$: Signal<User | null | undefined> = signal<User | null | undefined>(null);
 
   actionType$: Signal<string | undefined> = signal<string | undefined>('');
 
@@ -42,20 +42,20 @@ export class UsersContainerComponent {
 
   constructor() {
 
-    this.selectedUserSignal$ = toSignal(this.store.select(selectedUser));
+    this.selectedUser$ = toSignal(this.store.select(selectedUser));
     this.setUserNameCntrl();
     this.actionType$ = toSignal(this.store.select(getUserActionType));
 
   }
 
   setUserNameCntrl() {
-    effect(() => this.userForm.get('userName')?.setValue(this.selectedUserSignal$()?.name));
+    effect(() => this.userForm.get('userName')?.setValue(this.selectedUser$()?.name));
   }
 
   save() {
-    if (this.actionType$() === UserActions.updateUser.type && this.userForm.valid && this.selectedUserSignal$() !== null) {
+    if (this.actionType$() === UserActions.updateUser.type && this.userForm.valid && this.selectedUser$() !== null) {
 
-      const user = this.selectedUserSignal$()!;
+      const user = this.selectedUser$()!;
 
       const name = this.userForm.get('userName')?.value;
 

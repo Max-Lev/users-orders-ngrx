@@ -35,22 +35,18 @@ export const ordersReducer = createReducer(
   on(OrdersActions.updateOrders,
     (state, action) => ordersEntityAdapter.updateMany(action.orders, state)
   ),
-  on(OrdersActions.deleteOrder,
-    (state, action) => {
-      debugger;
-      return ordersEntityAdapter.removeOne(action.id, state);
-    }
-  ),
 
-  on(OrdersActions.deleteOrders,
-    (state, action) => ordersEntityAdapter.removeMany(action.ids, state)
-  ),
+  on(OrdersActions.deleteOrder, (state, action) => {
+    return ordersEntityAdapter.removeOne(action.id, state);
+  }),
+
+  on(OrdersActions.deleteOrders, (state, action) => {
+    return ordersEntityAdapter.removeMany(action.ids, state);
+  }),
+
   on(OrdersActions.loadOrders, (state, action) => {
-
-    const loadOrders = ordersEntityAdapter.setAll(action.orders, state);
-    return loadOrders;
-  }
-  ),
+    return ordersEntityAdapter.setAll(action.orders, state);
+  }),
   on(OrdersActions.clearOrders,
     state => ordersEntityAdapter.removeAll(state)
   ),
