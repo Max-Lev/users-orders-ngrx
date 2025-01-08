@@ -6,17 +6,14 @@ import { usersResolver } from './resolvers/users.resolver';
 
 const routes: Routes = [
   {
-    path:'users',loadComponent:()=>UsersContainerComponent,
-    resolve:{
-      getUsers:usersResolver,
-      
-    }
+    path: 'users', loadComponent: () => UsersContainerComponent,
+    resolve: { getUsers: usersResolver }
   },
   {
-    path:'',redirectTo:'users',pathMatch:'full'
+    path: '', redirectTo: 'users', pathMatch: 'full'
   },
   {
-    path:'**',redirectTo:'',pathMatch:'full'
+    path: '**', redirectTo: '', pathMatch: 'full'
   }
 ];
 

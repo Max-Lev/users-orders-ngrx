@@ -11,8 +11,6 @@ export class OrdersService {
 
   readonly http = inject(HttpClient);
 
-  constructor() { }
-
   getOrders$() :Observable<Orders[]>{
     return this.http.get<Orders[]>(environment.getOrdersApi);
   }

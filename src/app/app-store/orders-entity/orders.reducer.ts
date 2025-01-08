@@ -6,13 +6,13 @@ import { OrdersActions } from './orders.actions';
 export const ordersFeatureKey = 'orders';
 
 export interface OrdersEntityState extends EntityState<Orders> {
-  // additional entities state properties
+  
 }
 
 export const ordersEntityAdapter: OrdersEntityAdapter<Orders> = createEntityAdapter<Orders>();
 
 export const initialState: OrdersEntityState = ordersEntityAdapter.getInitialState({
-  // additional entity state properties
+  
 });
 
 export const ordersReducer = createReducer(

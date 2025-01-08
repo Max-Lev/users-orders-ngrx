@@ -13,11 +13,9 @@ export const initialState: UsersLoadState = {
     errorMsg: null
 };
 
-
 export const usersLoadReducer = createReducer(
     initialState,
     on(loadUsers, (state) => {
-        console.log('loadUsers ', state);
         return { ...state, loadingSuccess: true }
     }),
     on(loadUsersSuccess, (state, action) => ({

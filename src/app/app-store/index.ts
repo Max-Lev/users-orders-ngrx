@@ -44,7 +44,6 @@ export const selectAllOrdersEntities = createSelector(selectOrdersEntitiesState,
 export const selectUserOrders = createSelector(selectAll, selectedUserId, selectedUser,
   (selectAll: Orders[], selectedUserId: number | null, selectedUser: User | null | undefined) => {
     const userOrders = selectAll.filter((order: Orders) => order.userId === selectedUserId);
-    console.log('selectUserOrders')
     return userOrders.map((order) => {
       return {
         id: selectedUserId,

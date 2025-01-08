@@ -21,7 +21,7 @@ import { UserOrdersComponent } from '../user-orders/user-orders.component';
   styleUrls: ['./users-container.component.scss'],
   standalone: true,
   imports: [NgForOf, AsyncPipe, UsersTableComponent, ReactiveFormsModule,
-    NgIf,MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule, MatIconModule,
+    NgIf, MatInputModule, MatFormFieldModule, FormsModule, MatButtonModule, MatIconModule,
     UserOrdersComponent],
 
 })
@@ -37,15 +37,14 @@ export class UsersContainerComponent {
 
   actionType$: Signal<string | undefined> = signal<string | undefined>('');
 
-  isUserExistsSignal$ = toSignal(this.store.select(selectAllUsersEntities));
+  isUserExists$ = toSignal(this.store.select(selectAllUsersEntities));
 
+  getUserName = ()=>this.userForm.get('userName')?.value;
 
   constructor() {
-
     this.selectedUser$ = toSignal(this.store.select(selectedUser));
     this.setUserNameCntrl();
     this.actionType$ = toSignal(this.store.select(getUserActionType));
-
   }
 
   setUserNameCntrl() {
@@ -53,23 +52,20 @@ export class UsersContainerComponent {
   }
 
   save() {
-    if (this.actionType$() === UserActions.updateUser.type && this.userForm.valid && this.selectedUser$() !== null) {
+    if ( this.userForm.valid && this.selectedUser$() !== null) {
 
       const user = this.selectedUser$()!;
+      const name = this.getUserName();
 
-      const name = this.userForm.get('userName')?.value;
-
-      const selectedUser: Update<User> = { id: user.id, changes: { ...user, name: name } };
-
+      const selectedUser: Update<User> = { id: user && user.id, changes: { ...user, name: name } };
       this.store.dispatch(UserActions.updateUser({ user: selectedUser }));
     }
   }
 
   addUser() {
     if (this.userForm.valid) {
-
-      const name = this.userForm.get('userName')?.value;
-      const _isUserExists = this.isUserExistsSignal$()?.some((user) => user && user.name.toLowerCase() === name.toLowerCase());
+      const name = this.getUserName();
+      const _isUserExists = this.isUserExists$()?.some((user) => user && user.name.toLowerCase() === name.toLowerCase());
 
       if (!_isUserExists) {
         this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));

@@ -1,13 +1,13 @@
 import { NgIf, NgFor } from '@angular/common';
-import { Component, effect, inject, signal, Signal } from '@angular/core';
+import { Component, inject, Signal, signal, effect } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { DISPLAYED_COLUMNS, ORDERS_DATA, OrdersData } from './orders-table-datasource';
 import { Store } from '@ngrx/store';
 import { selectUserOrders } from 'src/app/app-store';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { OrdersTotalSumComponent } from '../orders-total-sum/orders-total-sum.component';
-import { MatButtonModule } from '@angular/material/button';
 import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
+import { OrdersTotalSumComponent } from '../orders-total-sum/orders-total-sum.component';
+import { DISPLAYED_COLUMNS, ORDERS_DATA, OrdersData } from './orders-table-datasource';
 
 @Component({
   selector: 'app-user-orders',

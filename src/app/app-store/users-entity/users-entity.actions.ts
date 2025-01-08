@@ -1,6 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-
 import { User } from './user.model';
 
 export const UserActions = createActionGroup({
@@ -13,10 +12,8 @@ export const UserActions = createActionGroup({
     'Upsert User': props<{ user: User }>(),
     'Add Users': props<{ users: User[] }>(),
     'Upsert Users': props<{ users: User[] }>(),
-
     'Update User': props<{ user: Update<User> }>(),
     'Selected User': props<{ user: User | null}>(),
-
     'Update Users': props<{ users: Update<User>[] }>(),
     'Delete User': props<{ id: number }>(),
     'Delete Users': props<{ ids: string[] }>(),

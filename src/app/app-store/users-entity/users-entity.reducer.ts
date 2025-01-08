@@ -1,13 +1,10 @@
-import { createFeature, createFeatureSelector, createReducer, on } from '@ngrx/store';
+import { createFeatureSelector, createReducer, on } from '@ngrx/store';
 import { EntityState, EntityAdapter as UsersEntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { User } from './user.model';
 import { UserActions } from './users-entity.actions';
 
-// export const usersEntityFeatureKey = 'usersEntityFeatureKey';
 export const usersEntityFeatureKey = 'users';
-
 export interface UsersEntityState extends EntityState<User> {
-  // Add custom properties here if needed
   selectedUserId: number | null;
   action?: string;
 }
@@ -15,7 +12,6 @@ export interface UsersEntityState extends EntityState<User> {
 export const usersEntityAdapter: UsersEntityAdapter<User> = createEntityAdapter<User>();
 
 export const initialState: UsersEntityState = usersEntityAdapter.getInitialState({
-  // Add custom properties here if needed
   selectedUserId: null
 });
 
@@ -24,14 +20,7 @@ export const usersEntityReducer = createReducer(
 
   on(UserActions.addUser, (state, action) => {
     let uuid = state.ids.length ? Math.max(...state.ids.map((id) => Number(id))) : null;
-    action = {
-      ...action, ...{
-        user: {
-          name: action.user.name,
-          id: ++uuid!
-        }
-      }
-    };
+    action = { ...action, ...{ user: { name: action.user.name, id: ++uuid! } } };
     return usersEntityAdapter.addOne(action.user, state);
   }),
 
@@ -42,36 +31,22 @@ export const usersEntityReducer = createReducer(
   on(UserActions.upsertUsers, (state, action) => usersEntityAdapter.upsertMany(action.users, state)),
 
   on(UserActions.updateUser, (state, action) => {
-
-    const update = {
-      ...state, ...{
-        selectedUserId: action.user && +action.user.id,
-        action: action.type
-      }
-    };
-
+    const update = { ...state, ...{ selectedUserId: action.user && +action.user.id, action: action.type } };
     return usersEntityAdapter.updateOne(action.user, update);
   }),
 
   on(UserActions.selectedUser, (state, action) => {
-    const selectedUser = {
-      ...state, ...{
-        selectedUserId: action.user && +action.user.id,
-        action: action.type
-      }
-    };
+    const selectedUser = { ...state, ...{ selectedUserId: action.user && +action.user.id, action: action.type } };
     return selectedUser;
   }),
 
   on(UserActions.updateUsers, (state, action) => usersEntityAdapter.updateMany(action.users, state)),
 
   on(UserActions.deleteUser, (state, action) => {
-
-    // const isSelectedUser = (state.selectedUserId !== action.id) ? state.selectedUserId : null;
-    // const deleteUser: UsersEntityState = { ...state, ...{ selectedUserId: isSelectedUser } };
-    // console.log('deleteUser ', deleteUser);
-    // return usersEntityAdapter.removeOne(action.id, deleteUser);
-    const deleteUser = { ...state, ...{ selectedUserId: action.id } };
+    const deleteUser = { ...state, ...{ selectedUserId: action.id,
+      action:action.type
+     } };
+    debugger;
     return usersEntityAdapter.removeOne(action.id, deleteUser);
   }),
   on(UserActions.deleteUsers, (state, action) => usersEntityAdapter.removeMany(action.ids, state)),
@@ -86,30 +61,9 @@ export const usersEntityReducer = createReducer(
 export const selectUserEntitiesState = createFeatureSelector<UsersEntityState>(usersEntityFeatureKey);
 
 export const {
-  selectAll, // Returns all entities as an array
-  selectEntities, // Returns entities as a dictionary (key-value pair)
-  selectIds, // Returns the array of IDs
-  selectTotal, // Returns the total count of entities
-} = usersEntityAdapter.getSelectors(selectUserEntitiesState); // Replace `selectUserState` with the feature selector
-
-
-
-// export const usersFeature = createFeature({
-//   name: usersEntityFeatureKey,
-//   reducer: usersEntityReducer,
-//   extraSelectors: ({ selectUsersState }) => ({
-//     ...usersEntityAdapter.getSelectors(selectUsersState),
-//   }),
-// });
-
-// export const {
-//   selectIds,
-//   selectEntities,
-//   selectAll,
-//   selectTotal,
-// } = usersFeature;
-
-
-
-
+  selectAll, 
+  selectEntities,
+  selectIds, 
+  selectTotal, 
+} = usersEntityAdapter.getSelectors(selectUserEntitiesState); 
 

@@ -1,8 +1,6 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-
 import { Orders } from './orders.model';
-import { User } from '../users-entity/user.model';
 
 export const OrdersActions = createActionGroup({
   source: 'Orders/API',

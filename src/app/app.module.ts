@@ -1,8 +1,8 @@
-import {  NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideStore, StoreModule } from '@ngrx/store';
+import { provideStore } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { usersEntityReducer } from './app-store/users-entity/users-entity.reducer';
@@ -23,25 +23,22 @@ import { UserEffects } from './providers/users.effect';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.development }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.development })
   ],
   providers: [
-    // provideStore(),
     provideEffects(UserEffects),
     provideStore({
-      usersLoadState:usersLoadReducer,
+      usersLoadState: usersLoadReducer,
       users: usersEntityReducer,
-      orders:ordersReducer,
+      orders: ordersReducer,
     }),
     provideStoreDevtools({
-      maxAge: 25, // Retains last 25 states
-      logOnly: environment.development, // Restrict extension to log-only mode
-      autoPause: true, // Pauses recording actions and state changes when the extension window is not open
-      trace: false, //  If set to true, will include stack trace for every dispatched action, so you can see it in trace tab jumping directly to that part of code
-      traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
-      // connectInZone: true // If set to true, the connection is established within the Angular zone
+      maxAge: 25, 
+      logOnly: environment.development, 
+      autoPause: true, 
+      trace: false,
+      traceLimit: 75
     })
-    
   ],
   bootstrap: [AppComponent]
 })
