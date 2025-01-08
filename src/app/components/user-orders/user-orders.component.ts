@@ -5,7 +5,7 @@ import { DISPLAYED_COLUMNS, ORDERS_DATA, OrdersData } from './orders-table-datas
 import { Store } from '@ngrx/store';
 import { selectUserOrders } from 'src/app/app-store';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { OrdersTotalSumComponent } from '../orders-total-sum/orders-total-sum/orders-total-sum.component';
+import { OrdersTotalSumComponent } from '../orders-total-sum/orders-total-sum.component';
 import { Orders } from 'src/app/app-store/orders-entity/orders.model';
 import { MatButtonModule } from '@angular/material/button';
 import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';

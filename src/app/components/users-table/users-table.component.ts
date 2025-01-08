@@ -48,7 +48,7 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
   }
 
   ngOnInit(): void {
-   
+
   }
 
   ngAfterContentInit() {
@@ -62,17 +62,16 @@ export class UsersTableComponent implements AfterViewInit, OnInit, AfterContentI
 
 
   editUser(user: User) {
-    // this.store.dispatch(UserActions.selectedUser({ user }));
-    const selectedUser: Update<User> = { id: user.id, changes: { ...user,name:user.name } };
-    this.store.dispatch(UserActions.updateUser({ user:selectedUser} ));
-    
+    const selectedUser: Update<User> = { id: user.id, changes: { ...user, name: user.name } };
+    this.store.dispatch(UserActions.updateUser({ user: selectedUser }));
+
   }
 
-  deleteUser(user:User){
-    this.store.dispatch(UserActions.deleteUser({id:user.id}));
+  deleteUser(user: User) {
+    this.store.dispatch(UserActions.deleteUser({ id: user.id }));
   }
 
-  selectedUser(user:User) {
+  selectedUser(user: User) {
     this.store.dispatch(UserActions.selectedUser({ user }));
   }
 

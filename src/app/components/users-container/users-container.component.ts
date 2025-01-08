@@ -1,5 +1,5 @@
 import { AsyncPipe, NgForOf } from '@angular/common';
-import { AfterViewInit, Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
+import { Component, effect, inject, signal, Signal } from '@angular/core';
 import { Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
 import { getUserActionType, selectAllUsersEntities, selectedUser } from 'src/app/app-store';
@@ -25,7 +25,7 @@ import { UserOrdersComponent } from '../user-orders/user-orders.component';
     UserOrdersComponent],
 
 })
-export class UsersContainerComponent implements OnInit, AfterViewInit {
+export class UsersContainerComponent {
 
   store = inject(Store);
 
@@ -37,7 +37,6 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
 
   actionType$: Signal<string | undefined> = signal<string | undefined>('');
 
-  // isUserExistsSignal$: Signal<boolean | undefined> = toSignal(this.store.select(isUserExistsSelector('')));
   isUserExistsSignal$ = toSignal(this.store.select(selectAllUsersEntities));
 
 
@@ -49,20 +48,11 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit(): void {
-
-  }
-
-  ngAfterViewInit(): void {
-
-  }
-
   setUserNameCntrl() {
     effect(() => this.userForm.get('userName')?.setValue(this.selectedUserSignal$()?.name));
   }
 
   save() {
-
     if (this.actionType$() === UserActions.updateUser.type && this.userForm.valid && this.selectedUserSignal$() !== null) {
 
       const user = this.selectedUserSignal$()!;
@@ -72,28 +62,15 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
       const selectedUser: Update<User> = { id: user.id, changes: { ...user, name: name } };
 
       this.store.dispatch(UserActions.updateUser({ user: selectedUser }));
-
-      // this.clearForm();
-
     }
-    // else if (this.userForm.valid) {
-
-    //   debugger;
-    //   const name = this.userForm.get('userName')?.value;
-
-    //   this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));
-
-    //   // this.clearForm();
-
-    // }
-
   }
 
   addUser() {
     if (this.userForm.valid) {
-      const name = this.userForm.get('userName')?.value;
 
+      const name = this.userForm.get('userName')?.value;
       const _isUserExists = this.isUserExistsSignal$()?.some((user) => user && user.name.toLowerCase() === name.toLowerCase());
+
       if (!_isUserExists) {
         this.store.dispatch(UserActions.addUser({ user: { id: -1, name: name } }));
         this.clearForm();
@@ -107,7 +84,6 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
     this.userForm.updateValueAndValidity();
     this.userForm.reset();
   }
-
 
 
 }
