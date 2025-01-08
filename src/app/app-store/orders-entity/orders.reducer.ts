@@ -37,10 +37,11 @@ export const ordersReducer = createReducer(
   ),
   on(OrdersActions.deleteOrder,
     (state, action) => {
+      debugger;
       return ordersEntityAdapter.removeOne(action.id, state);
     }
   ),
-  
+
   on(OrdersActions.deleteOrders,
     (state, action) => ordersEntityAdapter.removeMany(action.ids, state)
   ),

@@ -5,13 +5,17 @@ import { DISPLAYED_COLUMNS, ORDERS_DATA, OrdersData } from './orders-table-datas
 import { Store } from '@ngrx/store';
 import { selectUserOrders } from 'src/app/app-store';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { OrdersTotalSumComponent } from '../orders-total-sum/orders-total-sum/orders-total-sum.component';
+import { Orders } from 'src/app/app-store/orders-entity/orders.model';
+import { MatButtonModule } from '@angular/material/button';
+import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
 
 @Component({
   selector: 'app-user-orders',
   templateUrl: './user-orders.component.html',
   styleUrls: ['./user-orders.component.scss'],
   standalone:true,
-  imports: [MatTableModule, NgIf, NgFor],
+  imports: [MatTableModule, NgIf, NgFor,OrdersTotalSumComponent,MatButtonModule],
 })
 export class UserOrdersComponent {
 
@@ -20,11 +24,10 @@ export class UserOrdersComponent {
   clickedRows = new Set<OrdersData>();
 
   store = inject(Store);
+  
   selectedUserOrdersSignal$:Signal<OrdersData[] | undefined> = signal([]);
-
+  
   constructor(){
-
-    this.store.select(selectUserOrders).subscribe(v=>console.log(v));
 
     this.selectedUserOrdersSignal$ = toSignal(this.store.select(selectUserOrders));
 
@@ -32,6 +35,10 @@ export class UserOrdersComponent {
       this.dataSource = this.selectedUserOrdersSignal$() as OrdersData[];
     });
     
+  }
+
+  deleteOrder(order:OrdersData){
+    this.store.dispatch(OrdersActions.deleteOrder({id:order.order}));
   }
 
 }

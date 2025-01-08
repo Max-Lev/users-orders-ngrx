@@ -1,8 +1,8 @@
 import { AsyncPipe, NgForOf } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, effect, inject, OnInit, signal, Signal } from '@angular/core';
 import { Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
-import { getUserActionType, isUserExistsSelector, selectAllUsersEntities, selectedUser, selectUserOrders } from 'src/app/app-store';
+import { getUserActionType, selectAllUsersEntities, selectedUser } from 'src/app/app-store';
 import { User } from 'src/app/app-store/users-entity/user.model';
 import { UsersTableComponent } from '../users-table/users-table.component';
 import { MatInputModule } from '@angular/material/input';
@@ -39,7 +39,7 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
 
   // isUserExistsSignal$: Signal<boolean | undefined> = toSignal(this.store.select(isUserExistsSelector('')));
   isUserExistsSignal$ = toSignal(this.store.select(selectAllUsersEntities));
-  
+
 
   constructor() {
 
@@ -50,7 +50,7 @@ export class UsersContainerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   ngAfterViewInit(): void {

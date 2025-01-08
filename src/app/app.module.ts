@@ -1,6 +1,5 @@
-import { importProvidersFrom, NgModule } from '@angular/core';
+import {  NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideStore, StoreModule } from '@ngrx/store';
@@ -11,6 +10,7 @@ import { usersLoadReducer } from './app-store/users/user.reducer';
 import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment.development';
 import { ordersReducer } from './app-store/orders-entity/orders.reducer';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +39,7 @@ import { ordersReducer } from './app-store/orders-entity/orders.reducer';
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       // connectInZone: true // If set to true, the connection is established within the Angular zone
     })
-    // provideEffects(UserEffects),
+    
   ],
   bootstrap: [AppComponent]
 })

@@ -7,5 +7,5 @@ export interface OrdersData{
   price:number
 }
 
-export const DISPLAYED_COLUMNS: string[] = ['id', 'name', 'order', 'price'];
+export const DISPLAYED_COLUMNS: string[] = ['id', 'name', 'order', 'price','delete'];
 export const ORDERS_DATA:OrdersData[] = [];
