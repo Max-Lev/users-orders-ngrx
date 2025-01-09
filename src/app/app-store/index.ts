@@ -25,15 +25,13 @@ export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];
 
 export const selectAllUsersEntities = createSelector(selectUserEntitiesState, (state) => Object.values(state.entities));
 
-// Custom selector to get the selected user ID
 export const selectedUserId = createSelector(selectUserEntitiesState, (state: UsersEntityState) => state.selectedUserId);
 
-// Custom selector to get the selected user entity
 export const selectedUser = createSelector(
-  selectEntities, // Get the dictionary of entities
-  selectedUserId, // Get the selected user ID
+  selectEntities, 
+  selectedUserId, 
   (entities, selectedUserId) => {
-    return (selectedUserId ? entities[selectedUserId] : null) // Find the selected user
+    return (selectedUserId ? entities[selectedUserId] : null)
   }
 );
 
@@ -58,14 +56,4 @@ export const selectUserOrders = createSelector(selectAll, selectedUserId, select
 export const totalOrderSumSelector = createSelector(selectUserOrders, (selectUserOrders) => {
   return selectUserOrders.reduce((sum, order) => sum + order.price, 0);
 });
-
-// export const isUserExists = (name: string) => createSelector(selectEntities, (selectEntities: Dictionary<User>) => {
-//   const x =  Object.values(selectEntities).some((user) => user!.name.toLowerCase() === name.toLowerCase());
-//   return x;
-// });
-// export const isUserExistsSelector = (name: string) =>
-//   createSelector(selectEntities, (entities: Dictionary<User>) => {
-//     return Object.values(entities).some((user) => user && user.name.toLowerCase() === name.toLowerCase());
-//   });
-
 
