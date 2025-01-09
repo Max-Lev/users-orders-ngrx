@@ -55,14 +55,11 @@ export class UsersTableComponent {
   editUser(user: User) {
     const selectedUser: Update<User> = { id: user.id, changes: { ...user, name: user.name } };
     this.store.dispatch(UserActions.updateUser({ user: selectedUser }));
-    this.store.dispatch(UserActions.selectedUser({user}));
+    this.store.dispatch(UserActions.selectedUser({ user }));
   }
 
   deleteUser(user: User) {
-    const u = toSignal(this.store.select(selectedUser))
-    debugger;
     this.store.dispatch(UserActions.deleteUser({ id: user.id }));
-
     const list: string[] = this.selectedUserOrders$()?.map(((order: OrdersData) => `${order.order}`))!;
     this.store.dispatch(OrdersActions.deleteOrders({ ids: list }));
 
