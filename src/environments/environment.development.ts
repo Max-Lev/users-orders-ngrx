@@ -1,4 +1,5 @@
 export const environment = {
     development:true,
-    getUsersApi:'http://localhost:4200/assets/db/usersDB.json'
+    getUsersApi:'http://localhost:4200/assets/db/usersDB.json',
+    getOrdersApi:'http://localhost:4200/assets/db/ordersDB.json'
 };

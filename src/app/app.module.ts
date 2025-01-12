@@ -1,31 +1,44 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideStore, StoreModule } from '@ngrx/store';
+import { provideStore } from '@ngrx/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UsersReducer } from './app-store/users/user.reducer';
 import { HttpClientModule } from '@angular/common/http';
+import { usersEntityReducer } from './app-store/users-entity/users-entity.reducer';
+import { usersLoadReducer } from './app-store/users/user.reducer';
+import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from 'src/environments/environment.development';
+import { ordersReducer } from './app-store/orders-entity/orders.reducer';
 import { provideEffects } from '@ngrx/effects';
-import { UsersEffects } from './providers/users.effect';
+import { UserEffects } from './providers/users.effect';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({users:UsersReducer}, {}),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.development })
   ],
   providers: [
-    provideStore(),
-    provideEffects(UsersEffects),
+    provideEffects(UserEffects),
+    provideStore({
+      usersLoadState: usersLoadReducer,
+      users: usersEntityReducer,
+      orders: ordersReducer,
+    }),
+    provideStoreDevtools({
+      maxAge: 25, 
+      logOnly: environment.development, 
+      autoPause: true, 
+      trace: false,
+      traceLimit: 75
+    })
   ],
   bootstrap: [AppComponent]
 })

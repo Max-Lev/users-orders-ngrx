@@ -1,1 +1,24 @@
-<p>users-container works!</p>
+<div class="container">
+
+    <div class="form-layout">
+        <form [formGroup]="userForm">
+            <mat-form-field class="example-full-width">
+                <mat-label>User Name</mat-label>
+                <input matInput formControlName="userName">
+            </mat-form-field>
+        </form>
+        <div class="save-btn">
+            <button (click)="addUser()" mat-flat-button color="primary">Add User</button>
+        </div>
+        <div class="save-btn">
+            <button (click)="save()" mat-flat-button color="primary">Update</button>
+        </div>
+    </div>
+
+    <app-users-table></app-users-table>
+
+    <ng-container *ngIf="selectedUser$()">
+        <app-user-orders></app-user-orders>
+    </ng-container>
+
+</div>
