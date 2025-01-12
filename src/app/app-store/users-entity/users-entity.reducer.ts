@@ -43,10 +43,8 @@ export const usersEntityReducer = createReducer(
   on(UserActions.updateUsers, (state, action) => usersEntityAdapter.updateMany(action.users, state)),
 
   on(UserActions.deleteUser, (state, action) => {
-    const deleteUser = { ...state, ...{ selectedUserId: action.id,
-      action:action.type
-     } };
-    debugger;
+    const isUserActive = (state.selectedUserId===action.id) ?action.id: state.selectedUserId;
+    const deleteUser = { ...state, ...{ selectedUserId: isUserActive, action: action.type } };
     return usersEntityAdapter.removeOne(action.id, deleteUser);
   }),
   on(UserActions.deleteUsers, (state, action) => usersEntityAdapter.removeMany(action.ids, state)),
@@ -61,9 +59,9 @@ export const usersEntityReducer = createReducer(
 export const selectUserEntitiesState = createFeatureSelector<UsersEntityState>(usersEntityFeatureKey);
 
 export const {
-  selectAll, 
+  selectAll,
   selectEntities,
-  selectIds, 
-  selectTotal, 
-} = usersEntityAdapter.getSelectors(selectUserEntitiesState); 
+  selectIds,
+  selectTotal,
+} = usersEntityAdapter.getSelectors(selectUserEntitiesState);
 

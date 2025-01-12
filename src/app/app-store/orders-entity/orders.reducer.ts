@@ -41,7 +41,6 @@ export const ordersReducer = createReducer(
   }),
 
   on(OrdersActions.deleteOrders, (state, action) => {
-    debugger;
     return ordersEntityAdapter.removeMany(action.ids, state);
   }),
 

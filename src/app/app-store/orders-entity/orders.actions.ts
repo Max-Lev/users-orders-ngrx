@@ -14,7 +14,7 @@ export const OrdersActions = createActionGroup({
     'Update Order': props<{ orders: Update<Orders> }>(),
     'Update Orders': props<{ orders: Update<Orders>[] }>(),
     'Delete Order': props<{ id: number }>(),
-    'Delete Orders': props<{ ids: string[] }>(),
+    'Delete Orders': props<{ ids: number[] }>(),
     'Clear Orders': emptyProps(),
   }
 });

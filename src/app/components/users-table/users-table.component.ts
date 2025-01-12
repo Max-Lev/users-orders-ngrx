@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, Signal, ViewChild } from '@angular/core';
+import { Component, effect, inject, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -11,9 +11,9 @@ import { Store } from '@ngrx/store';
 import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Update } from '@ngrx/entity';
-import { selectAllUsersEntities, selectedUser, selectUserOrders } from 'src/app/app-store';
+import { selectAllOrdersEntities, selectAllUsersEntities, selectUserOrders } from 'src/app/app-store';
 import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
-import { OrdersData } from '../user-orders/orders-table-datasource';
+import { Orders } from 'src/app/app-store/orders-entity/orders.model';
 
 @Component({
   selector: 'app-users-table',
@@ -41,6 +41,7 @@ export class UsersTableComponent {
   store = inject(Store);
 
   selectedUserOrders$ = toSignal(this.store.select(selectUserOrders));
+  selectAllOrdersEntities$ = toSignal(this.store.select(selectAllOrdersEntities));
 
   constructor() {
     const _users$ = toSignal(this.store.select(selectAllUsersEntities))
@@ -60,9 +61,14 @@ export class UsersTableComponent {
 
   deleteUser(user: User) {
     this.store.dispatch(UserActions.deleteUser({ id: user.id }));
-    const list: string[] = this.selectedUserOrders$()?.map(((order: OrdersData) => `${order.order}`))!;
-    this.store.dispatch(OrdersActions.deleteOrders({ ids: list }));
+    const list = this.selectAllOrdersEntities$()?.map((order: Orders | undefined) => {
+      if (order?.userId === user.id) {
+        return order.id;
+      }
+      return undefined;
+    }).filter((id): id is number => id !== undefined);;
 
+    this.store.dispatch(OrdersActions.deleteOrders({ ids: list as number[] }));
   }
 
   selectedUser(user: User) {
