@@ -8,10 +8,10 @@ import { displayedColumns } from './users-table-datasource';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Store } from '@ngrx/store';
-import { UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
+import { deleteUserAndOrders, UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Update } from '@ngrx/entity';
-import { selectAllOrdersEntities, selectAllUsersEntities, selectUserOrders } from 'src/app/app-store';
+import { deleteUserOrderSelector, selectAllOrdersEntities, selectAllUsersEntities, selectUserOrders } from 'src/app/app-store';
 import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
 import { Orders } from 'src/app/app-store/orders-entity/orders.model';
 
@@ -42,7 +42,7 @@ export class UsersTableComponent {
 
   selectedUserOrders$ = toSignal(this.store.select(selectUserOrders));
   selectAllOrdersEntities$ = toSignal(this.store.select(selectAllOrdersEntities));
-
+  
   constructor() {
     const _users$ = toSignal(this.store.select(selectAllUsersEntities))
     effect(() => this.dataSource.data = _users$() as User[]);
@@ -60,15 +60,10 @@ export class UsersTableComponent {
   }
 
   deleteUser(user: User) {
-    this.store.dispatch(UserActions.deleteUser({ id: user.id }));
-    const list = this.selectAllOrdersEntities$()?.map((order: Orders | undefined) => {
-      if (order?.userId === user.id) {
-        return order.id;
-      }
-      return undefined;
-    }).filter((id): id is number => id !== undefined);;
-
-    this.store.dispatch(OrdersActions.deleteOrders({ ids: list as number[] }));
+    this.store.dispatch(deleteUserAndOrders({ 
+      user: user,
+      orders: this.selectAllOrdersEntities$() as Orders[] //{ id: 101, userId: 1, total: 500 }
+    }));
   }
 
   selectedUser(user: User) {

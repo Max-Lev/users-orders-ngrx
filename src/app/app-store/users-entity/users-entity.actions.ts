@@ -1,6 +1,7 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { createAction, createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { User } from './user.model';
+import { Orders } from '../orders-entity/orders.model';
 
 export const UserActions = createActionGroup({
   source: 'User/API',
@@ -17,6 +18,9 @@ export const UserActions = createActionGroup({
     'Update Users': props<{ users: Update<User>[] }>(),
     'Delete User': props<{ id: number }>(),
     'Delete Users': props<{ ids: string[] }>(),
+    // 'Delete User and Orders': props<{ user: User,orders:Orders[] }>(),
     'Clear Users': emptyProps(),
   }
 });
+
+export const deleteUserAndOrders = createAction('Delete User and Orders',props<{ orders: Orders[], user:User }>());

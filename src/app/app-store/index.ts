@@ -1,5 +1,5 @@
 import { isDevMode } from '@angular/core';
-import { ActionReducerMap, createSelector, MetaReducer } from '@ngrx/store';
+import { ActionReducerMap, combineReducers, createAction, createSelector, MetaReducer, props } from '@ngrx/store';
 import { selectEntities, selectUserEntitiesState, usersEntityReducer, UsersEntityState } from './users-entity/users-entity.reducer';
 import { usersLoadReducer, UsersLoadState } from './users/user.reducer';
 import { User } from './users-entity/user.model';
@@ -11,13 +11,15 @@ export interface AppState {
   usersLoadState: UsersLoadState;
   users: UsersEntityState;
   orders: OrdersEntityState;
+  
 }
 
 export const reducers: ActionReducerMap<AppState> = {
 
   users: usersEntityReducer,
   usersLoadState: usersLoadReducer,
-  orders: ordersReducer
+  orders: ordersReducer,
+  
 };
 
 
@@ -28,8 +30,8 @@ export const selectAllUsersEntities = createSelector(selectUserEntitiesState, (s
 export const selectedUserId = createSelector(selectUserEntitiesState, (state: UsersEntityState) => state.selectedUserId);
 
 export const selectedUser = createSelector(
-  selectEntities, 
-  selectedUserId, 
+  selectEntities,
+  selectedUserId,
   (entities, selectedUserId) => {
     return (selectedUserId ? entities[selectedUserId] : null)
   }
@@ -55,5 +57,19 @@ export const selectUserOrders = createSelector(selectAll, selectedUserId, select
 
 export const totalOrderSumSelector = createSelector(selectUserOrders, (selectUserOrders) => {
   return selectUserOrders.reduce((sum, order) => sum + order.price, 0);
+});
+
+export const deleteUserOrderSelector = createSelector(selectAllUsersEntities, selectAllOrdersEntities, selectedUser,
+  (userEntities, ordersEntities, selectedUser) => {
+    console.log(userEntities, ordersEntities, selectedUser)
+    return {
+      userEntities, ordersEntities
+    }
+  }
+);
+
+export const combinedReducers = combineReducers({
+  useraFeature: usersEntityReducer,
+  ordersFeature: ordersReducer
 });
 
