@@ -11,8 +11,7 @@ import { Store } from '@ngrx/store';
 import { deleteUserAndOrders, UserActions } from 'src/app/app-store/users-entity/users-entity.actions';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Update } from '@ngrx/entity';
-import { deleteUserOrderSelector, selectAllOrdersEntities, selectAllUsersEntities, selectUserOrders } from 'src/app/app-store';
-import { OrdersActions } from 'src/app/app-store/orders-entity/orders.actions';
+import { selectAllOrdersEntities, selectAllUsersEntities, selectUserOrders } from 'src/app/app-store';
 import { Orders } from 'src/app/app-store/orders-entity/orders.model';
 
 @Component({

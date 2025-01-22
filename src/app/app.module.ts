@@ -8,11 +8,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { usersEntityReducer } from './app-store/users-entity/users-entity.reducer';
 import { usersLoadReducer } from './app-store/users/user.reducer';
 import { provideStoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { ordersReducer } from './app-store/orders-entity/orders.reducer';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './providers/users.effect';
 
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { importProvidersFrom } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,7 @@ import { UserEffects } from './providers/users.effect';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.development })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [
     provideEffects(UserEffects),
@@ -33,12 +37,15 @@ import { UserEffects } from './providers/users.effect';
       orders: ordersReducer,
     }),
     provideStoreDevtools({
-      maxAge: 25, 
-      logOnly: environment.development, 
-      autoPause: true, 
+      maxAge: 25,
+      logOnly: environment.production,
+      autoPause: true,
       trace: false,
       traceLimit: 75
-    })
+    }),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
   ],
   bootstrap: [AppComponent]
 })
